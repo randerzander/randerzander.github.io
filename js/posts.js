@@ -1,26 +1,31 @@
-var post = $('#content')
+var post = $('#post');
+var postList = $('#postList');
 
-var oldWrite = document.write;
-document.write = function(node){ post.append(node) }
+function init(href){
+  //Check URL param for explicit post
+  var queryParams = window.location.href.split('/').slice(-1)[0].replace('?', '').replace('#', '').split('&');
+  var postUrl = $.grep(queryParams, function(v, i){ return v.length == 0 || v.split('=')[0] == 'post'; })[0].split('=').slice(-1)[0];
+  if (typeof href != 'undefined') postUrl = href;
 
-
-function init(){
-    $.get('../posts/latest.md', function(data){
-      var lines = data.split('\n');
-      $.each(lines, function(i, line){
-        var custom = false;
-        $.each(custom_delims, function(delim, func){
-          if (line.indexOf(delim) > -1){
-            post.append(func(line.split(delim)[1]));
-            custom = true;
-          }
-        });
-        if (custom == false) post.append(markdown.toHTML(line, 'Maruku'));
-      });
+  //Display post content
+  var path = 'posts/';
+  if (postUrl.length > 0 && postUrl.indexOf('.md') > -1) path += postUrl;
+  else path += 'latest.md';
+  $.get(path, function(data){
+    while (post[0].firstChild) post[0].removeChild(post[0].firstChild);
+    post.append(marked(data));
+    $.each($('[gist]'), function(i, v){
+      $('<p data-gist-id="'+v.getAttribute('gist')+'"/>').appendTo(v).gist();
     });
-}
+  });
 
-var custom_delims = {
-  'HTML:': function(line){ return line; },
-  'SCRIPT:': function(line){ $.getScript(line); return ''; }
-};
+  //Display post list
+  $.get('posts/posts.txt', function(data){
+    while (postList[0].firstChild) postList[0].removeChild(postList[0].firstChild);
+    $.each(data.split('\n'), function(i, line){
+      var desc = $.trim(line.split(',')[0]);
+      var href = $.trim(line.split(',')[1]);
+      postList.append('<p><a href="#?post='+href+'" onclick="init(\''+href+'\');">'+desc+'</a></p>');
+    });
+  });
+}
