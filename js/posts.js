@@ -14,9 +14,7 @@ function init(href){
   $.get(path, function(data){
     while (post[0].firstChild) post[0].removeChild(post[0].firstChild);
     post.append(marked(data));
-    $.each($('[gist]'), function(i, v){
-      $('<p data-gist-id="'+v.getAttribute('gist')+'"/>').appendTo(v).gist();
-    });
+    $.each($('[data-gist-id]'), function(i, v){ $(v).appendTo(v).gist(); });
   });
 
   //Display post list

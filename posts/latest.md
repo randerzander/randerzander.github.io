@@ -1,57 +1,29 @@
-# Data-Driven Dynamic Forms in [Apache Zeppelin](https://zeppelin.apache.org/)
+# QueryBuilder UI in [Apache Zeppelin](https://zeppelin.apache.org/)
 
 ![](screenshots/zeppelin-forms/zeppelin-logo.jpg)
 
-Apache Zeppelin is [all](https://blogs.apache.org/foundation/entry/the_apache_software_foundation_announces92) [the](http://www.datasciencecentral.com/profiles/blog/show?id=6448529%3ABlogPost%3A428213) [rage](http://www.slideshare.net/prasadwagle/zeppelin-at-twitter-62171116) [lately](http://schd.ws/hosted_files/apachebigdata2016/00/Everyone%20Plays-Collaborative%20Data%20Science%20with%20Zeppelin.pdf) and it's not hard to see why. Zeppelin has connectors for just about every popular big-data engine.
+In the last post we demonstrated using basic HTML forms to allow end-users to tweak SparkSQL queries. Now we'll make it prettier thanks to the open source [JQuery QueryBuilder plugin](http://querybuilder.js.org/).
 
-It's wonderful for those who write Scala, R, Python, or SQL, but that's not everyone. Fortunately, Zeppelin's UI is extensible with [custom](https://zeppelin.apache.org/docs/0.6.0-incubating-SNAPSHOT/manual/dynamicform.html) [forms](https://zeppelin.apache.org/docs/0.6.0-incubating-SNAPSHOT/displaysystem/table.html) and your favorite [HTML & JS libraries](https://zeppelin.apache.org/docs/0.6.0-incubating-SNAPSHOT/displaysystem/display.html#html)
+First we setup a few variables in Spark.
 
+<p data-gist-id="f447378c03738cf78b2bea270ca9a8ee" data-gist-file="cell1.scala">
 
-Zeppelin's docs show how to add textboxes, checkboxes, and dropdown lists so readers can tweak queries without writing code. Let's take that capability beyond static values and instead automatically populate lists with data from tables:
+Building on the snippet from the last post, I've added a wrapper for printing DataFrames as tables.
 
-<p gist="d56b5b675e3c9d46eae13335cb70fb36">
+Line 25 tells Spark to listen for changes to "clause" originating from the notebook front-end. The value of "query" gets updated each time.
 
-The snippet above provides 3 helper methods for getting..
+Next we use the %angular interpreter with a few CSS and JS artifacts loaded from [GitHub](https://github.com/mistic100/jQuery-QueryBuilder) by [RawGit](https://rawgit.com/). A bit of JavaScript handles populating QueryBuilder's filter list from Spark.
 
-1. Names of available tables
+<p data-gist-id="f447378c03738cf78b2bea270ca9a8ee" data-gist-file="cell2.html">
 
-2. All columns names for a given table
+Lastly we have a third cell for displaying query results:
 
-3. All distinct values on a specific table and column
+<p data-gist-id="f447378c03738cf78b2bea270ca9a8ee" data-gist-file="cell3.scala">
 
-Lines 13 and beyond use them to solicit user input for a table name and the names of two columns. The selected values generate a query like:
+Users can then work with an intuitive interface for customizing a where clause. On clicking "Generate Query" and then "Run Query", Zeppelin automatically updates the query, runs it, and prints results as a table.
 
-```
-select col1, col2, count(*) as count from table group by col1, col2 order by count desc
-```
+![](screenshots/zeppelin-qb/qb.gif)
 
-Zeppelin automatically runs the query and prints results in normal tabular form.
+You can modify the snippets to perform different queries and tweak the UI.
 
-![](screenshots/zeppelin-forms/table-analyzer.png)
-
-You can of course modify the snippet to generate queries of your own design and make more interesting use of Zeppelin's charts:
-
-```
-var query = """
-select year, type, neighborhood, count(*) as count from (
-  select split(rpt_date, "\\/")[2] as year, uc2_literal as type, neighborhood from crimes
-  ) a
-  where neighborhood = '"""
-query = query + z.select("neighborhood", list("crimes", "neighborhood")) + "' group by year, type, neighborhood"
-
-val df = sqlContext.sql(query)
-println("%table " + df.columns.mkString("\t"))
-println(df.map(x => x.mkString("\t")).collect().mkString("\n"))
-```
-
-![](screenshots/zeppelin-forms/Atlanta1.png)
-
-A dynamically populated list of all of Atlanta's neighborhoods.
-
-![](screenshots/zeppelin-forms/neighborhood-list.png)
-
-The graphs update whenever the user selects a different value from the list.
-
-![](screenshots/zeppelin-forms/Atlanta2.png)
-
-Up-next.. how to use a better, more flexible [query builder](http://querybuilder.js.org/demo.html)!
+Unfortunately, QueryBuilder only allows for filter rules, and *not* specific columns or aggregate functions. Hit me up on [Twitter](https://twitter.com/randerzander) or [GitHub](https://github.com/randerzander) if you know how to do that!
