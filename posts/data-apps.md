@@ -106,3 +106,5 @@ As you can see, from the length of this snippet, setting up variables for JS cha
 <p data-gist-id="6fec0ff8601bdd6bd25bbefe0847b2d5" data-gist-file="graph.js">
 
 Lastly for this example, add your auto-refreshing downstream charts and tables, making sure to copy their IDs into the "refresh" attribute of the #chart div in the Plotly graph paragraph.
+
+Now, kudos and big bonus points are available to whoever integrates [StarMap](http://timechart.toolset.io/) with their data!
