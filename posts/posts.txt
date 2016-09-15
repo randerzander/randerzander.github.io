@@ -1,2 +1,3 @@
-QueryBuilder in Zeppelin,latest.md
+Apache Phoenix Tips,latest.md
+QueryBuilder in Zeppelin,querybuilder.md
 Data-Driven Forms in Zeppelin,dynamic-forms1.md

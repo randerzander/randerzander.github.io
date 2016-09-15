@@ -1,5 +1,6 @@
-![](http://phoenix.apache.org/images/phoenix-logo-small.png)
-# Performance Tips & Tricks
+# QueryBuilder UI in [Apache Zeppelin](https://zeppelin.apache.org/)
+
+![](screenshots/zeppelin-forms/zeppelin-logo.jpg)
 
 In the last post we demonstrated using basic HTML forms to allow end-users to tweak SparkSQL queries. Now we'll make it prettier thanks to the open source [JQuery QueryBuilder plugin](http://querybuilder.js.org/).
 
