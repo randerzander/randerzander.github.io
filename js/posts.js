@@ -4,7 +4,9 @@ var postList = $('#postList');
 function init(href){
   //Check URL param for explicit post
   var queryParams = window.location.href.split('/').slice(-1)[0].replace('?', '').replace('#', '').split('&');
-  var postUrl = $.grep(queryParams, function(v, i){ return v.length == 0 || v.split('=')[0] == 'post'; })[0].split('=').slice(-1)[0];
+  var postUrl = $.grep(queryParams, function(v, i){
+    return v.length == 0 || v.split('=')[0] == 'post';
+  })[0].split('=').slice(-1)[0];
   if (typeof href != 'undefined') postUrl = href;
 
   //Display post list
