@@ -107,4 +107,4 @@ Thus, Phoenix and [this](https://cdn.meme.am/instances/500x/37579492.jpg) wonder
 
 ## In Summary
 
-Phoenix is a speed booster for HBase application development with mature, familiar interfaces and abstractions.
+Phoenix is a speed booster for HBase application development with mature, familiar interfaces and abstractions. If you're using HBase, you should probably also be using Phoenix.
