@@ -23,3 +23,8 @@ function showPosition(position) {
     x.innerHTML = now + ": lat: " + position.coords.latitude + 
     "<br>Long: " + position.coords.longitude; 
 }
+
+function printAll(){
+    var all = document.getElementById("all");
+    all.innerHTML = JSON.stringify(localStorage['points']);
+}
