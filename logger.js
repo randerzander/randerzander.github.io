@@ -1,3 +1,5 @@
+var points = [];
+
 var x = document.getElementById("demo");
 function getLocation() {
     if (navigator.geolocation) {
@@ -5,14 +7,19 @@ function getLocation() {
     } else {
         x.innerHTML = "Geolocation is not supported by this browser.";
     }
-}
-function showPosition(position) {
-    x.innerHTML = "Latitude: " + position.coords.latitude + 
-    "<br>Longitude: " + position.coords.longitude; 
+    setTimeout(getLocation, 10000);
 }
 
-function showOnMap(position) {
-    var latlon = position.coords.latitude + "," + position.coords.longitude;
-    var img_url = "https://maps.googleapis.com/maps/api/staticmap?center="+latlon+"&zoom=14&size=400x300&sensor=false&key=YOUR_:KEY";
-    document.getElementById("mapholder").innerHTML = "<img src='"+img_url+"'>";
+function showPosition(position) {
+    var now = new Date().toISOString();
+    var newPoint = [now, position.coords.latitude, position.coords.longitude];
+
+    if ((points == []) && (JSON.parse(localStorage['points']).constructor == Array))
+      points = JSON.parse(localStorage['points']);
+
+    points.push(newPoint);
+    localStorage['points'] = JSON.stringify(points);
+
+    x.innerHTML = now + ": lat: " + position.coords.latitude + 
+    "<br>Long: " + position.coords.longitude; 
 }
