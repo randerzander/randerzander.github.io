@@ -1,30 +1,40 @@
 var points = [];
+var map;
+var route = [];
 
-var x = document.getElementById("demo");
-function getLocation() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(showPosition);
-    } else {
-        x.innerHTML = "Geolocation is not supported by this browser.";
-    }
-    setTimeout(getLocation, 10000);
+function start(){
+  //Setup map
+  map = L.map('mapid');
+  var osmUrl='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+  var osmAttrib='Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
+  var osm = new L.TileLayer(osmUrl, {attribution: osmAttrib});   
+  polyline = L.polyline(route).addTo(map);      
+
+  osm.addTo(map);
+
+  //Start logging location
+  getLocation();
+  document.getElementById("download").hidden = false;
 }
 
-function showPosition(position) {
-    var now = new Date().toISOString();
-    var newPoint = [now, position.coords.latitude, position.coords.longitude];
-
-    if ((points == []) && (JSON.parse(localStorage['points']).constructor == Array))
-      points = JSON.parse(localStorage['points']);
-
-    points.push(newPoint);
-    localStorage['points'] = JSON.stringify(points);
-
-    x.innerHTML = now + ": lat: " + position.coords.latitude + 
-    "<br>Long: " + position.coords.longitude; 
+//Save as CSV
+function download(){
+  res = points.map(x => x.join(','))
+  uriContent = "data:application/octet-stream," + encodeURIComponent(res.join('\n'));
+  window.open(uriContent, 'neuesDokument');
 }
 
-function printAll(){
-    var all = document.getElementById("all");
-    all.innerHTML = JSON.stringify(localStorage['points']);
+//File upload to local var
+function loadRoute(el){
+  var reader = new FileReader();
+  reader.onload = function(el) {
+    console.log('Loaded file');
+    parseRoute(el.target.result);
+    document.getElementById("start").hidden = false;
+  };
+  reader.readAsText(el.files[0]);
+}
+
+function setText(id, text){
+  document.getElementById(id).innerHtml = text;
 }
