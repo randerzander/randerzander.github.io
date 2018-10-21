@@ -10,10 +10,12 @@ function getLocation() {
       var point = [now, pos.coords.latitude, pos.coords.longitude];
 
       map.setView([position[0], position[1]], 18);
-      if (points.length == 0)
-        nextWaypoint = route[0];
-      else if (distance(position, nextWaypoint) < .001)
-        nextWaypoint = route[calcNextWaypoint(position)];
+      if (route.length > 0){
+        if (points.length == 0)
+          nextWaypoint = route[0];
+        else if (distance(position, nextWaypoint) < .001)
+          nextWaypoint = route[calcNextWaypoint(position)];
+      }
 
       points.push(point);
 

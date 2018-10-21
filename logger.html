@@ -7,16 +7,20 @@ crossorigin=""/>
 </HEAD>
 
 <BODY>
+<CENTER>
 	<p id="position"></p>
   <input id="routes" name="file" type="file" onChange="loadRoute(this);" />
-  <button id="start" onclick="start()" hidden="true">Start Route</button>
+  <button id="start" onclick="start(false)" hidden="true">Start Route</button>
+  <button id="free" onclick="start(true)">Start Free Run</button>
   <p>
-  <button id="download" onclick="download()" hidden="true">Save to File</button>
   <div id="mapid" style="height:75%"></div>
   <p id="distanceTraveled" hidden="true"></button>
   <p id="percentTraveled" hidden="true"></button>
   <p id="distanceRemaining" hidden="true"></button>
   <p id="percentRemaining" hidden="true"></button>
+  <p>
+  <button id="download" onclick="download()" hidden="true">Save to File</button>
+</CENTER>
 </BODY>
 
 <script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js"

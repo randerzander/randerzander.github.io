@@ -2,19 +2,21 @@ var points = [];
 var map;
 var route = [];
 
-function start(){
+function start(free){
   //Setup map
   map = L.map('mapid');
   var osmUrl='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
   var osmAttrib='Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
   var osm = new L.TileLayer(osmUrl, {attribution: osmAttrib});   
-  polyline = L.polyline(route).addTo(map);      
-
+  if (!free) polyline = L.polyline(route).addTo(map);
   osm.addTo(map);
 
   //Start logging location
   getLocation();
-  document.getElementById("download").hidden = false;
+  show("routes", false);
+  show("free", false);
+  show("start", false);
+  show("download", true);
 }
 
 //Save as CSV
@@ -37,4 +39,10 @@ function loadRoute(el){
 
 function setText(id, text){
   document.getElementById(id).innerHtml = text;
+}
+
+function show(id, visible){
+  var el = document.getElementById(id);
+  if (visible) el.style.display = "block";
+  else el.style.display = "none";
 }
