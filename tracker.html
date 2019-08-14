@@ -45,7 +45,9 @@ crossorigin=""/>
           <div id="runDiv" v-if="showRun">
           </div>
 
-          <button id="download" v-if="showDownload" onclick="download()">Save to File</button>
+          <div id="downloadDiv" v-if="showDownload">
+            <button id="download" onclick="download()">Save to File</button>
+          </div>
           <p><p>
           <button id="reload" class="btn btn-lg btn-secondary" v-if="!showSetup" onclick="location.reload()">Restart</button>
         </p>

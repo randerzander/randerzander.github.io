@@ -42,12 +42,23 @@ function drawGraph(){
 }
 
 function download(){
-  res = data.strokes.map(x => x.join(','))
-  uriContent = "data:application/octet-stream," + encodeURIComponent(res.join('\n'));
-  window.open(uriContent, 'neuesDokument');
+  var content = toCSV(data.strokes);
+
+  var dt = new Date();
+  var fn = [dt.getUTCFullYear(), dt.getMonth(), dt.getDay(), dt.getHours(), dt.getMinutes()].join('_')+'.csv';
+
+  //download the CSV
+  var downloadLink = document.createElement("a");
+  downloadLink.href = 'data:text/csv;charset=utf-8,' + content;
+  downloadLink.download = fn;
+  document.body.appendChild(downloadLink);
+  downloadLink.click();
+  document.body.removeChild(downloadLink);
 }
 
 function handleStroke1(arr){
+  data.showDownload = true;
+
   //console.log('Stroke1: ' + arr);
   //37,2,0,92,0,0,68,118,32,1,179,2,170,0,98,0,34,2,2,0
 
@@ -90,8 +101,6 @@ function handleStroke1(arr){
     strokeCount : arr[18] + arr[19]*MID_MUL
   };
 
-  debugger;
-
   data.currentStroke = stroke;
   data.stroke1.push(stroke);
   data.raw1.push([new Date()].concat(arr));
@@ -110,8 +119,6 @@ function handleStroke2(arr){
     projectedWorkDistance : arr[12] + arr[13]*MID_MUL + arr[14]*HIGH_MUL
   };
 
-  debugger;
-
   Object.keys(stroke2).map(x => {
     data.currentStroke[x] = stroke2[x];
   });
@@ -121,3 +128,55 @@ function handleStroke2(arr){
   //Plotly.extendTraces('strokes', {x: [[stroke2.stop]], y: [[stroke2.strokeCount]]}, [1]);
 }
 
+function fuck(){
+  console.log('wtf');
+}
+
+function toCSV(objArray){
+  var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+  var str = '';
+
+  for (var i = 0; i < array.length; i++) {
+      var line = '';
+      for (var index in array[i]) {
+          if (line != '') line += ','
+
+          line += array[i][index];
+      }
+
+      str += line + '\r\n';
+  }
+
+  return str;
+}
+
+function convertArrayOfObjectsToCSV(args) {  
+        var result, ctr, keys, columnDelimiter, lineDelimiter, data;
+
+        data = args.data || null;
+        if (data == null || !data.length) {
+            return null;
+        }
+
+        columnDelimiter = args.columnDelimiter || ',';
+        lineDelimiter = args.lineDelimiter || '\n';
+
+        keys = Object.keys(data[0]);
+
+        result = '';
+        result += keys.join(columnDelimiter);
+        result += lineDelimiter;
+
+        data.forEach(function(item) {
+            ctr = 0;
+            keys.forEach(function(key) {
+                if (ctr > 0) result += columnDelimiter;
+
+                result += item[key];
+                ctr++;
+            });
+            result += lineDelimiter;
+        });
+
+        return result;
+}

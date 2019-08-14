@@ -61,13 +61,6 @@ function start(){
   getLocation();
 }
 
-//Save as CSV
-function download(){
-  res = points.map(x => x.join(','))
-  uriContent = "data:application/octet-stream," + encodeURIComponent(res.join('\n'));
-  window.open(uriContent, 'neuesDokument');
-}
-
 //File upload to local var
 function loadRoute(el){
   var reader = new FileReader();
