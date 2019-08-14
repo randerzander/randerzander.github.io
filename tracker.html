@@ -1,0 +1,82 @@
+<!doctype html>
+<HTML lang="en">
+
+<HEAD>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!--
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css"
+  integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+crossorigin=""/>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<link rel="stylesheet" href="http://getbootstrap.com/docs/4.1/examples/cover/cover.css">
+-->
+<link rel="stylesheet" href="lib/css/leaflet.css" />
+<link rel="stylesheet" href="lib/css/bootstrap.min.css" />
+<link rel="stylesheet" href="lib/css/cover.css" />
+</HEAD>
+
+<BODY class="text-center">
+    <div id="app" class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+      <main role="main" class="inner cover">
+        <h1 class="cover-heading">Workout Tracker</h1>
+          <div id="setup" v-if="showSetup">
+            <button id="run" class="btn btn-lg btn-secondary" onclick="start()">Free Run</button>
+            <button id="routeRun" class="btn btn-lg btn-secondary" onclick="routeRun()">Route Run</button>
+            <p>
+            <p><p>
+            <button id="row" class="btn btn-lg btn-secondary" onclick="pair()">Connect Rower</button>
+            <p><p>
+            <button id="friend" class="btn btn-lg btn-secondary" onclick="webtrc()">Race a Friend</button>
+          </div>
+
+          <input id="routes" name="file" type="file" v-if="showRoutePicker" onChange="loadRoute(this);"/>
+          <p>
+
+          <div id="mapDiv" v-show="showMap"></div>
+
+          <div id="rowDiv" v-if="showRow">
+            <div id="strokeGauge"></div>
+            <p id="stroke">{{ data.currentStroke }}</p>
+            <div id="strokes"></div>
+          </div>
+
+          <div id="runDiv" v-if="showRun">
+          </div>
+
+          <button id="download" v-if="showDownload" onclick="download()">Save to File</button>
+          <p><p>
+          <button id="reload" class="btn btn-lg btn-secondary" v-if="!showSetup" onclick="location.reload()">Restart</button>
+        </p>
+      </main>
+
+    </div>
+</BODY>
+
+<!-- For remote hosted libs
+<script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js"
+ integrity="sha512-nMMmRyTVoLYqjP9hrbed9S+FzjZHW5gY1TWCHA5ckwXZBadntCNs8kEqAWdrb9O7rxbCaA4lKTIWjDXZxflOcA=="
+crossorigin=""></script>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+-->
+<script src="lib/js/jquery-3.3.1.slim.min.js"></script>
+<script src="lib/js/popper.min.js"></script>
+<script src="lib/js/bootstrap.min.js"></script>
+<script src="lib/js/vue.js"></script>
+<script src="lib/js/d3.v5.min.js"></script>
+<script src="lib/js/c3.min.js"></script>
+<script src="lib/js/plotly-latest.min.js"></script>
+
+<script src="js/location.js"></script>
+<script src="js/rower.js"></script>
+<script src="js/bt.js"></script>
+<script src="js/main.js"></script>
+<!-- <script src="js/test.js"></script> -->
+
+</HTML>
